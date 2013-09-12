@@ -41,7 +41,7 @@ getversion()
                 *ffmpeg*) 
                     output=`$exec -version`
                     ;;
-                *apache*) 
+                *apache*)
                     output=`$exec -v`
                     ;;
                 *bundler* | *rake* | *flvtool2* | *rmagick*)
