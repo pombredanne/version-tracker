@@ -11,7 +11,7 @@
 # nsure that everything is executed/stored under the user's home directory and not /tmp or elsewhere.
 
 #set log path depending on running user
-PATH_LIST="/usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin"
+PATH_LIST="/usr/local/cpanel /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin"
 LOG="getver.log"
 ME=`whoami`
 if [ $ME = "root" ]; then 
@@ -31,6 +31,18 @@ getversion()
             ;;
         *Django*)
             APPNAME="django-admin.py"
+            ;;
+        *Mysql*)
+            APPNAME="mysql"
+            ;;
+        *ImageMagick*)
+            APPNAME="identify"
+            ;;
+        *Subversion*)
+            APPNAME="svnserve"
+            ;;
+        *Mercurial*)
+            APPNAME="hg"
             ;;
         *)
         APPNAME=$1
@@ -63,7 +75,10 @@ getversion()
                 *python*)
                     OUTPUT=`$EXEC --version 2>&1`
                     ;;
-			    *) 
+                *cpanel*)
+                    OUTPUT=`$EXEC -V`
+                    ;;
+                *) 
                     OUTPUT=`$EXEC --version`
                     ;;
 		    esac 
