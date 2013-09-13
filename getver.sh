@@ -55,7 +55,7 @@ getversion()
 	EXECS=`find $PATH_LIST -maxdepth 1 -regextype posix-extended -iregex ".*/${APPNAME}(|[0-9]+|[0-9]+.[0-9]+)"`
     #let sw (gems) that has no exec be processed
     if [ -z "$EXECS" ]; then
-        EXECS=`echo $SW | awk '{print tolower($0)}'`
+        EXECS=`echo $1 | awk '{print tolower($0)}'`
     fi
  
 	for EXEC in $EXECS
@@ -72,7 +72,6 @@ getversion()
                     OUTPUT=`$EXEC -v`
                     ;;
                 *bundler* | *rake* | *flvtool2* | *rmagick*)
-                    EXEC=`echo $SW | awk '{print tolower($0)}'`
                     OUTPUT=`gem list | grep "^$EXEC "`
                     ;;
                 *python*)
