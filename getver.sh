@@ -57,7 +57,7 @@ getversion()
     if [ -z "$EXECS" ]; then
         EXECS=`echo $SW | awk '{print tolower($0)}'`
     fi
-    echo EXECS:$EXECS
+ 
 	for EXEC in $EXECS
 	do
 		if [[ ! -d "$EXEC" ]]; then
