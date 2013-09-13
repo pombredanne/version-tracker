@@ -31,9 +31,11 @@ getversion()
             ;;
         *Django*)
             APPNAME="django-admin.py"
+            ;;
         *)
         APPNAME=$1
-    fi
+        ;;
+    esac
     
 	EXECS=`find $PATH_LIST -maxdepth 1 -regextype posix-extended -iregex ".*/${APPNAME}(|[0-9]+|[0-9]+.[0-9]+)"`
     #let sw (gems) that has no exec be processed
