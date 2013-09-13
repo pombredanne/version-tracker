@@ -11,7 +11,7 @@
 # nsure that everything is executed/stored under the user's home directory and not /tmp or elsewhere.
 
 #set log path depending on running user
-PATH_LIST="/usr/local /usr/sbin /usr/bin /sbin /bin"
+PATH_LIST="/usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin"
 LOG="getver.log"
 ME=`whoami`
 if [ $ME = "root" ]; then 
@@ -24,42 +24,49 @@ rm -f $LOG_TO
 
 getversion() 
 {
-	version="NA"
-	execs=`find $PATH_LIST -regextype posix-extended -iregex ".*/${1}(|[0-9]+|[0-9]+.[0-9]+)"`
-    #let sw (gems) that has no exec be processed
-    if [ -z "$execs" ]; then
-        execs=`echo $SW | awk '{print tolower($0)}'`
+	
+    VERSION="NA"
+    if [ $1 = "Apache" ]; then
+        APPNAME="httpd"
+    else 
+        APPNAME=$1
     fi
-    echo execs:$execs
-	for exec in $execs
+    
+	EXECS=`find $PATH_LIST -maxdepth 1 -regextype posix-extended -iregex ".*/${APPNAME}(|[0-9]+|[0-9]+.[0-9]+)"`
+    #let sw (gems) that has no exec be processed
+    if [ -z "$EXECS" ]; then
+        EXECS=`echo $SW | awk '{print tolower($0)}'`
+    fi
+    echo EXECS:$EXECS
+	for EXEC in $EXECS
 	do
-		if [[ ! -d "$exec" ]]; then
-		    case $exec in
+		if [[ ! -d "$EXEC" ]]; then
+		    case $EXEC in
 			    *ssh*)
-                    output=`$exec -V 2>&1`
+                    OUTPUT=`$EXEC -V 2>&1`
                     ;;
                 *ffmpeg*) 
-                    output=`$exec -version`
+                    OUTPUT=`$EXEC -version`
                     ;;
                 *apache*)
-                    output=`$exec -v`
+                    OUTPUT=`$EXEC -v`
                     ;;
                 *bundler* | *rake* | *flvtool2* | *rmagick*)
-                    exec=`echo $SW | awk '{print tolower($0)}'`
-                    output=`gem list | grep $exec`
+                    EXEC=`echo $SW | awk '{print tolower($0)}'`
+                    OUTPUT=`gem list | grep $EXEC`
                     ;;
                 *python*)
-                    output=`$exec --version 2>&1`
+                    OUTPUT=`$EXEC --version 2>&1`
                     ;;
 			    *) 
-                    output=`$exec --version`
+                    OUTPUT=`$EXEC --version`
                     ;;
 		    esac 
      		if [ $? = 0 ]; then
-				#version=`echo $output | grep -o '[0-9]\..*'`
-                version=$output
+				#version=`echo $OUTPUT | grep -o '[0-9]\..*'`
+                VERSION=$OUTPUT
 			fi
-            echo $SW, $version >> $LOG_TO
+            echo $SW, $VERSION >> $LOG_TO
 		fi
     done
 }
