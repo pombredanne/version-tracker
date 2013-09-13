@@ -86,11 +86,7 @@ getversion()
                     ;;
 		    esac 
      		if [ $? = 0 ]; then
-#                case $1 in
-#                    *) VERSION=`echo $OUTPUT | grep -o '\([0-9]\.\)\{2,\}[0-9]\+'`
-#                        ;;
-#		        esac
-                VERSION=`echo $OUTPUT | grep -o '\([0-9]\.\)\{2,\}[0-9]\+'`
+                VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
 			fi
             echo $SW, $VERSION >> $LOG_TO
 		fi
