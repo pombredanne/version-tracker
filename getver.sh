@@ -19,7 +19,6 @@ if [ $ME = "root" ]; then
 else
 	LOG_TO="/home/${ME}/${LOG}"
 fi
-echo "I am \"$ME\" and logging to $LOG_TO"
 rm -f $LOG_TO
 
 getversion() 
@@ -82,3 +81,4 @@ else
     echo "ERROR: Could not find $VERSIONS file. Please make sure it is located at `pwd`."
 fi
 
+echo "I am \"$ME\" and logging to $LOG_TO"
