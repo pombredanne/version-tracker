@@ -32,7 +32,7 @@ getversion()
         *Django*)
             APPNAME="django-admin.py"
             ;;
-        *Mysql*)
+        *MySQL*)
             APPNAME="mysql"
             ;;
         *ImageMagick*)
