@@ -47,9 +47,6 @@ getversion()
         *RubyGems*)
             APPNAME="gem"
             ;;
-        *Softaculous*)
-            APPNAME="php /usr/local/cpanel/whostmgr/docroot/cgi/softaculous/cli.php"
-            ;;
         *)
             APPNAME=$1
             ;;
@@ -83,6 +80,9 @@ getversion()
                     ;;
                 *cpanel*)
                     OUTPUT=`$EXEC -V`
+                    ;;
+                *softaculous*)
+                    OUTPUT=`php /usr/local/cpanel/whostmgr/docroot/cgi/softaculous/cli.php -v` 
                     ;;
                 *) 
                     OUTPUT=`$EXEC --version`
