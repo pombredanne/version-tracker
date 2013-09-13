@@ -44,9 +44,12 @@ getversion()
         *Mercurial*)
             APPNAME="hg"
             ;;
+        *RubyGems*)
+            APPNAME="gem"
+            ;;
         *)
-        APPNAME=$1
-        ;;
+            APPNAME=$1
+            ;;
     esac
     
 	EXECS=`find $PATH_LIST -maxdepth 1 -regextype posix-extended -iregex ".*/${APPNAME}(|[0-9]+|[0-9]+.[0-9]+)"`
@@ -70,7 +73,7 @@ getversion()
                     ;;
                 *bundler* | *rake* | *flvtool2* | *rmagick*)
                     EXEC=`echo $SW | awk '{print tolower($0)}'`
-                    OUTPUT=`gem list | grep $EXEC`
+                    OUTPUT=`gem list | grep "^$EXEC "`
                     ;;
                 *python*)
                     OUTPUT=`$EXEC --version 2>&1`
@@ -83,8 +86,11 @@ getversion()
                     ;;
 		    esac 
      		if [ $? = 0 ]; then
-				#version=`echo $OUTPUT | grep -o '[0-9]\..*'`
-                VERSION=$OUTPUT
+#                case $1 in
+#                    *) VERSION=`echo $OUTPUT | grep -o '\([0-9]\.\)\{2,\}[0-9]\+'`
+#                        ;;
+#		        esac
+                VERSION=`echo $OUTPUT | grep -o '\([0-9]\.\)\{2,\}[0-9]\+'`
 			fi
             echo $SW, $VERSION >> $LOG_TO
 		fi
