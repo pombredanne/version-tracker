@@ -25,9 +25,13 @@ getversion()
 {
 	
     VERSION="NA"
-    if [ $1 = "Apache" ]; then
-        APPNAME="httpd"
-    else 
+    case  $1 in
+        *Apache*)
+            APPNAME="httpd"
+            ;;
+        *Django*)
+            APPNAME="django-admin.py"
+        *)
         APPNAME=$1
     fi
     
