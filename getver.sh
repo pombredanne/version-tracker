@@ -19,7 +19,6 @@ if [ $ME = "root" ]; then
 else
 	LOG_TO="/home/${ME}/${LOG}"
 fi
-echo "I am \"$ME\" and logging to $LOG_TO"
 rm -f $LOG_TO
 
 getversion() 
@@ -48,7 +47,7 @@ getversion()
                 *ffmpeg*) 
                     OUTPUT=`$EXEC -version`
                     ;;
-                *apache*)
+                *apache* | *httpd*)
                     OUTPUT=`$EXEC -v`
                     ;;
                 *bundler* | *rake* | *flvtool2* | *rmagick*)
@@ -82,3 +81,4 @@ else
     echo "ERROR: Could not find $VERSIONS file. Please make sure it is located at `pwd`."
 fi
 
+echo "I am \"$ME\" and logging to $LOG_TO"
