@@ -87,9 +87,9 @@ getversion()
 		    esac 
      		if [ $? = 0 ]; then
                 VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
-			fi
+            fi
             echo $SW, $VERSION >> $LOG_TO
-		fi
+        fi
     done
 }
 
