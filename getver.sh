@@ -24,31 +24,31 @@ rm -f $LOG_TO
 getversion() 
 {
 	VERSION="NA"
-    	case  $1 in
-    		*Apache*)
-            	APPNAME="httpd"
-            	;;
-        	*Django*)
-            	APPNAME="django-admin.py"
-            	;;
-        	*MySQL*)
-            	APPNAME="mysql"
-            	;;
-        	*ImageMagick*)
-           		APPNAME="identify"
-           		;;
-        	*Subversion*)
-           		APPNAME="svnserve"
-           		;;
-        	*Mercurial*)
-           		APPNAME="hg"
-           		;;
-        	*RubyGems*)
-           		APPNAME="gem"
-           		;;
-        	*)
-           		APPNAME=$1
-           		;;
+    case  $1 in
+    	*Apache*)
+            APPNAME="httpd"
+            ;;
+        *Django*)
+            APPNAME="django-admin.py"
+            ;;
+        *MySQL*)
+            APPNAME="mysql"
+            ;;
+        *ImageMagick*)
+           	APPNAME="identify"
+           	;;
+        *Subversion*)
+           	APPNAME="svnserve"
+           	;;
+        *Mercurial*)
+           	APPNAME="hg"
+           	;;
+        *RubyGems*)
+           	APPNAME="gem"
+           	;;
+        *)
+           	APPNAME=$1
+           	;;
     esac
     
 	EXECS=`find $PATH_LIST -maxdepth 1 -regextype posix-extended -iregex ".*/${APPNAME}(|[0-9]+|[0-9]+.[0-9]+)"`
@@ -56,13 +56,13 @@ getversion()
     if [ -z "$EXECS" ]; then
         EXECS=`echo $1 | awk '{print tolower($0)}'`
     fi
- 
+    
 	for EXEC in $EXECS
 	do
-		if [[ ! -d "$EXEC" ]]; then
+	    if [[ ! -d "$EXEC" ]]; then
 		    case $EXEC in
 			    *ssh*)
-                	OUTPUT=`$EXEC -V 2>&1`
+                    OUTPUT=`$EXEC -V 2>&1`
                     ;;
                 *ffmpeg*) 
                     OUTPUT=`$EXEC -version`
@@ -87,7 +87,13 @@ getversion()
                     ;;
 		    esac 
      		if [ $? = 0 ]; then
-                VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
+                case $EXEC in
+                    *bundler* | *rake* | *flvtool2* | *rmagick*)
+                        VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
+                        ;;
+                    *)
+                        VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
+                        ;;
             fi
             echo $SW, $VERSION >> $LOG_TO
         fi
