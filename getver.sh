@@ -59,7 +59,9 @@ getversion()
     
 	for EXEC in $EXECS
 	do
+        echo EXEC:$EXEC
 	    if [[ ! -d "$EXEC" ]]; then
+            echo EXECNOTDIR
 		    case $EXEC in
 			    *ssh*)
                     OUTPUT=`$EXEC -V 2>&1`
