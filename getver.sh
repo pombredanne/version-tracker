@@ -23,33 +23,32 @@ rm -f $LOG_TO
 
 getversion() 
 {
-	
-    VERSION="NA"
-    case  $1 in
-        *Apache*)
-            APPNAME="httpd"
-            ;;
-        *Django*)
-            APPNAME="django-admin.py"
-            ;;
-        *MySQL*)
-            APPNAME="mysql"
-            ;;
-        *ImageMagick*)
-            APPNAME="identify"
-            ;;
-        *Subversion*)
-            APPNAME="svnserve"
-            ;;
-        *Mercurial*)
-            APPNAME="hg"
-            ;;
-        *RubyGems*)
-            APPNAME="gem"
-            ;;
-        *)
-            APPNAME=$1
-            ;;
+	VERSION="NA"
+    	case  $1 in
+    		*Apache*)
+            	APPNAME="httpd"
+            	;;
+        	*Django*)
+            	APPNAME="django-admin.py"
+            	;;
+        	*MySQL*)
+            	APPNAME="mysql"
+            	;;
+        	*ImageMagick*)
+           		APPNAME="identify"
+           		;;
+        	*Subversion*)
+           		APPNAME="svnserve"
+           		;;
+        	*Mercurial*)
+           		APPNAME="hg"
+           		;;
+        	*RubyGems*)
+           		APPNAME="gem"
+           		;;
+        	*)
+           		APPNAME=$1
+           		;;
     esac
     
 	EXECS=`find $PATH_LIST -maxdepth 1 -regextype posix-extended -iregex ".*/${APPNAME}(|[0-9]+|[0-9]+.[0-9]+)"`
@@ -63,7 +62,7 @@ getversion()
 		if [[ ! -d "$EXEC" ]]; then
 		    case $EXEC in
 			    *ssh*)
-                    OUTPUT=`$EXEC -V 2>&1`
+                	OUTPUT=`$EXEC -V 2>&1`
                     ;;
                 *ffmpeg*) 
                     OUTPUT=`$EXEC -version`
