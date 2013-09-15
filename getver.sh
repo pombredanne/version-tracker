@@ -82,6 +82,12 @@ getversion()
                 *softaculous*)
                     OUTPUT=`php /usr/local/cpanel/whostmgr/docroot/cgi/softaculous/cli.php -v` 
                     ;;
+                *solus*)
+                    OUTPUT=`rpm -qa | grep xen-[0-9].*\.soluslabs`
+                    ;;
+                *onapp*)
+                    OUTPUT=`rpm -qa | grep onapp-hv-install`
+                    ;;
                 *) 
                     OUTPUT=`$EXEC --version`
                     ;;
@@ -89,11 +95,14 @@ getversion()
      		if [ $? = 0 ]; then
                 case $EXEC in
                     *bundler* | *rake* | *flvtool2* | *rmagick*)
-                        VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
+                        VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+'`
                         ;;
+                    *solus* | *onapp*)
+                        VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+-[0-9]\+' | head -1`                        
                     *)
                         VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
                         ;;
+                esac
             fi
             echo $SW, $VERSION >> $LOG_TO
         fi
