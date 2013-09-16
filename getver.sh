@@ -101,7 +101,6 @@ getversion()
                     ;;
                 *ffmpeg*) 
                     OUTPUT=`$EXEC -version`
-                    echo OUTPUT:$OUTPUT
                     ;;
                 *) 
                     OUTPUT=`$EXEC --version`
