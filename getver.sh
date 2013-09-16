@@ -51,6 +51,9 @@ getversion()
         *RubyGems*)
            	APPNAME="gem"
            	;;
+        *Railgun*)
+            APPNAME="rg-listener"
+            ;;
         *)
            	APPNAME=$1
            	;;
@@ -92,6 +95,9 @@ getversion()
                     ;;
                 *onapp*)
                     OUTPUT=`rpm -qa | grep onapp-hv-install`
+                    ;;
+                *rvsitebuilder*)
+                    OUTPUT=`cat /var/cpanel/rvglobalsoft/rvsitebuilder/rvsitebuilderversion.txt`
                     ;;
                 *) 
                     OUTPUT=`$EXEC --version`
