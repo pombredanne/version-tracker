@@ -99,13 +99,8 @@ getversion()
                 *rvsitebuilder*)
                     OUTPUT=`cat /var/cpanel/rvglobalsoft/rvsitebuilder/rvsitebuilderversion.txt`
                     ;;
-                *ffmpeg-php*)
-                    PHPINFO="~/public_html/phpinfo.php"
-                    if [[ -x $PHPINFO ]]; then
-                        OUTPUT=`php $PHPINFO | grep ffmpeg-php | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
-                    else
-                        OUTPUT=""
-                    fi
+                ffmpeg-php)
+                    OUTPUT=`php "~/public_html/phpinfo.php" | grep ffmpeg-php | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
                     ;;
                 *) 
                     OUTPUT=`$EXEC --version`
