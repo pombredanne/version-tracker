@@ -71,10 +71,7 @@ getversion()
 		    case $EXEC in
 			    *ssh*)
                     OUTPUT=`$EXEC -V 2>&1`
-                    ;;
-                ffmpeg) 
-                    OUTPUT=`$EXEC -version`
-                    ;;
+                    ;;        
                 *apache* | *httpd*)
                     OUTPUT=`$EXEC -v`
                     ;;
@@ -99,8 +96,12 @@ getversion()
                 *rvsitebuilder*)
                     OUTPUT=`cat /var/cpanel/rvglobalsoft/rvsitebuilder/rvsitebuilderversion.txt`
                     ;;
-                ffmpeg-php)
+                *ffmpeg-php*)
                     OUTPUT=`php ~/public_html/phpinfo.php | grep ffmpeg-php | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
+                    ;;
+                *ffmpeg*) 
+                    OUTPUT=`$EXEC -version`
+                    echo OUTPUT:$OUTPUT
                     ;;
                 *) 
                     OUTPUT=`$EXEC --version`
@@ -112,7 +113,7 @@ getversion()
                     *bundler* | *rake* | *flvtool2* | *rmagick*)
                         VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+'`
                         ;;
-                    *solus* | *onapp*)
+                    *solus* | *onapp* | "ffmpeg")
                         VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+-[0-9]\+'`
                         ;;
                     *mysql*)
