@@ -13,8 +13,8 @@
 #set -x
 
 #set log path depending on running user
-PATH_LIST="/usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin"
-#PATH_LIST="/usr/local/cpanel /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin"
+#PATH_LIST="/usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin"
+PATH_LIST="/usr/local/cpanel /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin"
 LOG="getver.log"
 ME=`whoami`
 if [ $ME = "root" ]; then 
