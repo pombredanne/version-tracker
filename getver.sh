@@ -72,7 +72,7 @@ getversion()
 			    *ssh*)
                     OUTPUT=`$EXEC -V 2>&1`
                     ;;
-                *ffmpeg*) 
+                ffmpeg) 
                     OUTPUT=`$EXEC -version`
                     ;;
                 *apache* | *httpd*)
