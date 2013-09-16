@@ -100,7 +100,7 @@ getversion()
                     OUTPUT=`cat /var/cpanel/rvglobalsoft/rvsitebuilder/rvsitebuilderversion.txt`
                     ;;
                 ffmpeg-php)
-                    OUTPUT=`php "~/public_html/phpinfo.php" | grep ffmpeg-php | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
+                    OUTPUT=`php ~/public_html/phpinfo.php | grep ffmpeg-php | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
                     ;;
                 *) 
                     OUTPUT=`$EXEC --version`
