@@ -108,6 +108,7 @@ getversion()
                         ;;
                     *mysql*)
                         VERSION=`echo $OUTPUT | grep -o 'Distrib \([0-9]\+\.\)\+[0-9]\+' | cut -d' ' -f2`
+                        ;;
                     *)
                         VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
                         ;;
