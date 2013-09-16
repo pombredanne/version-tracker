@@ -10,8 +10,11 @@
 # 6. Preferably add a flag to the script for non-root execution (assume root by default), such as: ./script.sh -u and e
 # nsure that everything is executed/stored under the user's home directory and not /tmp or elsewhere.
 
+#set -x
+
 #set log path depending on running user
-PATH_LIST="/usr/local/cpanel /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin"
+PATH_LIST="/usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin"
+#PATH_LIST="/usr/local/cpanel /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin"
 LOG="getver.log"
 ME=`whoami`
 if [ $ME = "root" ]; then 
@@ -23,7 +26,9 @@ rm -f $LOG_TO
 
 getversion() 
 {
-	VERSION="NA"
+    echo Checking $1...
+    VERSIONLIST=""
+
     case  $1 in
     	*Apache*)
             APPNAME="httpd"
@@ -52,15 +57,14 @@ getversion()
     esac
     
 	EXECS=`find $PATH_LIST -maxdepth 1 -regextype posix-extended -iregex ".*/${APPNAME}(|[0-9]+|[0-9]+.[0-9]+)"`
-    #let sw (gems) that has no exec be processed
-    if [ -z "$EXECS" ]; then
+    #let sw (gems, libs, etc) that has no exec be processed
+    if [[ -z "$EXECS" ]]; then
         EXECS=`echo $1 | awk '{print tolower($0)}'`
     fi
-    
+
 	for EXEC in $EXECS
 	do
 	    if [[ ! -d "$EXEC" ]]; then
-            echo Checking $1...
 		    case $EXEC in
 			    *ssh*)
                     OUTPUT=`$EXEC -V 2>&1`
@@ -71,8 +75,8 @@ getversion()
                 *apache* | *httpd*)
                     OUTPUT=`$EXEC -v`
                     ;;
-                *bundler* | *rake* | *flvtool2* | *rmagick*)
-                    OUTPUT=`gem list | grep "^$EXEC "`
+                *bundler* | *rmagick*)
+                    OUTPUT=`gem list | grep ^$EXEC `
                     ;;
                 *python*)
                     OUTPUT=`$EXEC --version 2>&1`
@@ -93,7 +97,8 @@ getversion()
                     OUTPUT=`$EXEC --version`
                     ;;
 		    esac 
-     		if [ $? = 0 ]; then
+
+     		if [[ -n $OUTPUT ]]; then
                 case $EXEC in
                     *bundler* | *rake* | *flvtool2* | *rmagick*)
                         VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+'`
@@ -105,18 +110,30 @@ getversion()
                         VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
                         ;;
                 esac
+                VERSIONLIST=`echo $VERSIONLIST $VERSION`
             fi
-            echo $SW, $VERSION >> $LOG_TO
         fi
     done
 }
 
-VERSIONS="version_list.txt"
-if [ -f $VERSIONS ]; then
-    for SW in `cat $VERSIONS | cut -d' ' -f1 | uniq `;
+VERSIONSFILE="version_list.txt"
+if [ -f $VERSIONSFILE ]; then
+    for SW in `cat $VERSIONSFILE | cut -d' ' -f1 | uniq `;
     do
 	    SW=`echo $SW | tr -d ' \n\r'`
 	    getversion $SW
+
+        if [[ -z $VERSIONLIST ]]; then
+            VERSIONLIST="NA"
+        else 
+            #remove doubles in the version list
+            VERSIONLIST=`echo $VERSIONLIST | awk '!arr[$1]++' RS=" "`
+        fi
+
+        for VERSION in $VERSIONLIST
+        do
+            echo $SW, $VERSION >> $LOG_TO
+        done
     done
 else
     echo "ERROR: Could not find $VERSIONS file. Please make sure it is located at `pwd`."
