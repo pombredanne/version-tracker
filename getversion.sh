@@ -1,17 +1,4 @@
 
-# 1. Scan common paths on the server for software versions (i.e. /usr/bin;/usr/local/bin)
-# 2. Output the information to a text file (/var/log/ when executing as root and the users home directory when not 
-# executing as root)
-# 3. This text file should be in an easily parsable format (such as .csv or space/comma deliminated)
-# 4. If a software version can't be located, instead of leaving the output blank, the letters "NA" should be inserted 
-# instead (meaning Not Available).
-# 5. Overwriting the previous file each time it executes is OK.
-# 6. Preferably add a flag to the script for non-root execution (assume root by default), such as: 
-#./script.sh -u and ensure that everything is executed/stored under the user's home directory and not
-# /tmp or elsewhere.
-
-#set -x
-
 #set log path depending on running user
 LOG="getver.log"
 ME=`whoami`
@@ -38,7 +25,7 @@ getversion()
             APPNAME="mysql"
             ;;
         *ImageMagick*)
-           	APPNAME="identify"
+			APPNAME="identify"
            	;;
         *Subversion*)
            	APPNAME="svnserve"
