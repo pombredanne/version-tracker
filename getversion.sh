@@ -87,7 +87,7 @@ getversion()
                     OUTPUT=`$EXEC -v`
                     ;;
                 bundler | rmagick)
-                    OUTPUT=`gem list | grep ^$EXEC `
+                    OUTPUT=`gem list | grep ^${EXEC}\ `
                     ;;
                 *python*)
                     OUTPUT=`$EXEC --version 2>&1`
