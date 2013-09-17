@@ -9,18 +9,17 @@ and log installed software versions of the programs listed in version_list.txt.
 
   SYNOPSIS
 
-      getver.sh [-u username | -h]
- 
+      getver.sh 
+      
+      
   PARAMETERS
           
-      -u username : run the script as user "username" (and ensure that everything is executed/stored under 
-                        the user's home directory and not/tmp or elsewhere)
-          
-      -h          : display help screen
+      None
+      
           
   RESULT
   
-        getver.log - csv file located in /var/log for root or ~/ for other users
+        getver.log - csv file located in /var/log if run as root or ~/ if run as other users
         
   
   NOTES
