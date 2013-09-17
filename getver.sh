@@ -20,5 +20,5 @@ if [ $# -gt 0 ]; then
             ;;
     esac
 else 
-    $BASH ./getversion.sh
+    $BASH getversion.sh
 fi
