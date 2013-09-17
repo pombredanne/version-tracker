@@ -16,6 +16,10 @@
 #set log path depending on running user
 
 LOG="getver.log"
+
+if [ $1 = -r ]; then 
+    su - $2
+fi
 ME=`whoami`
 if [ $ME = "root" ]; then 
 	LOG_TO="/var/log/${LOG}"
@@ -170,3 +174,6 @@ else
 fi
 
 echo "I am \"$ME\" and logging to $LOG_TO"
+if [ $1 = -r ]; then 
+    exit
+fi
