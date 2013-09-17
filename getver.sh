@@ -7,14 +7,14 @@
 # 4. If a software version can't be located, instead of leaving the output blank, the letters "NA" should be inserted 
 # instead (meaning Not Available).
 # 5. Overwriting the previous file each time it executes is OK.
-# 6. Preferably add a flag to the script for non-root execution (assume root by default), such as: ./script.sh -u and e
-# nsure that everything is executed/stored under the user's home directory and not /tmp or elsewhere.
+# 6. Preferably add a flag to the script for non-root execution (assume root by default), such as: 
+#./script.sh -u and ensure that everything is executed/stored under the user's home directory and not
+# /tmp or elsewhere.
 
 #set -x
 
 #set log path depending on running user
-#PATH_LIST="/usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin"
-PATH_LIST="/usr/local/cpanel /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin"
+
 LOG="getver.log"
 ME=`whoami`
 if [ $ME = "root" ]; then 
@@ -55,16 +55,29 @@ getversion()
             APPNAME="rg-listener"
             ;;
         *)
-           	APPNAME=$1
+           	APPNAME=`echo $1 | tr '[:upper:]' '[:lower:]'`
            	;;
     esac
     
-	EXECS=`find $PATH_LIST -maxdepth 1 -regextype posix-extended -iregex ".*/${APPNAME}(|[0-9]+|[0-9]+.[0-9]+)"`
+    DEPTH=1
+    case $APPNAME in
+        php)
+            PATH_LIST="/usr/local/php* /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin"
+            DEPTH=2
+            ;;
+        cpanel)
+            PATH_LIST="/usr/local/cpanel /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin"
+            ;;
+        *)
+            PATH_LIST="/usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin"
+            ;;
+    esac
+	EXECS=`find $PATH_LIST -maxdepth $DEPTH -regextype posix-extended -iregex ".*/${APPNAME}(|[0-9]+|[0-9]+.[0-9]+)"`
     #let sw (gems, libs, etc) that has no exec be processed
     if [[ -z "$EXECS" ]]; then
-        EXECS=`echo $1 | awk '{print tolower($0)}'`
+        EXECS=$APPNAME
     fi
-
+    
 	for EXEC in $EXECS
 	do
 	    if [[ ! -d "$EXEC" ]]; then
@@ -75,7 +88,7 @@ getversion()
                 *apache* | *httpd*)
                     OUTPUT=`$EXEC -v`
                     ;;
-                *bundler* | *rmagick*)
+                bundler | rmagick)
                     OUTPUT=`gem list | grep ^$EXEC `
                     ;;
                 *python*)
@@ -97,7 +110,12 @@ getversion()
                     OUTPUT=`cat /var/cpanel/rvglobalsoft/rvsitebuilder/rvsitebuilderversion.txt`
                     ;;
                 *ffmpeg-php*)
-                    OUTPUT=`php ~/public_html/phpinfo.php | grep ffmpeg-php | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
+                    if [[ $ME = root ]]; then
+                        PHPINFOPATH=/etc/httpd/htdocs/phpinfo.php
+                    else
+                        PHPINFOPATH=~/public_html/phpinfo.php
+                    fi
+                    OUTPUT=`php $PHPINFOPATH | grep ffmpeg-php | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
                     ;;
                 *ffmpeg*) 
                     OUTPUT=`$EXEC -version`
