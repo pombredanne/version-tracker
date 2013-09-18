@@ -56,23 +56,23 @@ getversion()
             APPNAME="mysql"
             ;;
         *ImageMagick*)
-	    APPNAME="identify"
-	    ;;
+	        APPNAME="identify"
+	        ;;
         *Subversion*)
-	    APPNAME="svnserve"
-	    ;;
+	        APPNAME="svnserve"
+	        ;;
         *Mercurial*)
-	    APPNAME="hg"
-	    ;;
+	        APPNAME="hg"
+	        ;;
         *RubyGems*)
-	    APPNAME="gem"
-	    ;;
+	        APPNAME="gem"
+	        ;;
         *Railgun*)
             APPNAME="rg-listener"
             ;;
         *)
-	    APPNAME=`echo $1 | tr '[:upper:]' '[:lower:]'`
-	    ;;
+	        APPNAME=`echo $1 | tr '[:upper:]' '[:lower:]'`
+	        ;;
     esac
     
     DEPTH=1
@@ -92,7 +92,7 @@ getversion()
 
     #for users with no find rights in /usr/local/cpanel
     if [[ $EXECS = "/usr/local/cpanel" ]]; then
-	EXECS=/usr/local/cpanel/cpanel
+	    EXECS=/usr/local/cpanel/cpanel
     fi
     #let sw (gems, libs, etc) that has no exec be processed
     if [[ -z "$EXECS" ]]; then
@@ -100,94 +100,94 @@ getversion()
     fi
     
     for EXEC in $EXECS
-      do
-      if [[ ! -d "$EXEC" ]]; then
-	  case $EXEC in
-	      *ssh*)
-		  OUTPUT=`$EXEC -V 2>&1`
-		  ;;        
-	      *apache* | *httpd*)
-		  OUTPUT=`$EXEC -v`
-		  ;;
-	      bundler | rmagick)
-		  OUTPUT=`gem list | grep ^${EXEC}\ `
-		  ;;
-	      *python*)
-		  OUTPUT=`$EXEC --version 2>&1`
-		  ;;
-	      *cpanel*)
-		  OUTPUT=`$EXEC -V`
-		  ;;
-	      *softaculous*)
-		  OUTPUT=`php /usr/local/cpanel/whostmgr/docroot/cgi/softaculous/cli.php -v` 
-		  ;;
-	      *solus*)
-		  OUTPUT=`rpm -qa | grep xen-[0-9].*\.soluslabs`
-		  if [ -z $OUTPUT ]; then
-		      OUTPUT=`rpm -qa | grep ^xen-[0-9]\+`
-		  fi
-		  ;;
-	      *onapp*)
-		  OUTPUT=`rpm -qa | grep onapp-hv-install`
-		  ;;
-	      *rvsitebuilder*)
-		  OUTPUT=`cat /var/cpanel/rvglobalsoft/rvsitebuilder/rvsitebuilderversion.txt`
-		  ;;
-	      *ffmpeg-php*)
-		  if [[ $ME = root ]]; then
-		      PHPINFOPATH=/etc/httpd/htdocs/phpinfo.php
-		  else
-		      PHPINFOPATH=~/public_html/phpinfo.php
-		  fi
-		  OUTPUT=`php $PHPINFOPATH | grep ffmpeg-php | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
-		  ;;
-	      *ffmpeg*) 
-		  OUTPUT=`$EXEC -version`
-		  ;;
-	      *) 
-		  OUTPUT=`$EXEC --version`
-		  ;;
-	  esac 
+    do
+        if [[ ! -d "$EXEC" ]]; then
+	        case $EXEC in
+	            *ssh*)
+		            OUTPUT=`$EXEC -V 2>&1`
+		            ;;        
+	            *apache* | *httpd*)
+		            OUTPUT=`$EXEC -v`
+		            ;;
+	            bundler | rmagick)
+		            OUTPUT=`gem list | grep ^${EXEC}\ `
+		            ;;
+	            *python*)
+		            OUTPUT=`$EXEC --version 2>&1`
+		            ;;
+	            *cpanel*)
+		            OUTPUT=`$EXEC -V`
+		            ;;
+	            *softaculous*)
+		            OUTPUT=`php /usr/local/cpanel/whostmgr/docroot/cgi/softaculous/cli.php -v` 
+		            ;;
+	            *solus*)
+		            OUTPUT=`rpm -qa | grep xen-[0-9].*\.soluslabs`
+		            if [ -z $OUTPUT ]; then
+		                OUTPUT=`rpm -qa | grep ^xen-[0-9]\+`
+		            fi
+		            ;;
+	            *onapp*)
+		            OUTPUT=`rpm -qa | grep onapp-hv-install`
+		            ;;
+	            *rvsitebuilder*)
+		            OUTPUT=`cat /var/cpanel/rvglobalsoft/rvsitebuilder/rvsitebuilderversion.txt`
+		            ;;
+	            *ffmpeg-php*)
+		            if [[ $ME = "root" ]]; then
+		                PHPINFOPATH=/etc/httpd/htdocs/phpinfo.php
+		            else
+		                PHPINFOPATH=~/public_html/phpinfo.php
+		            fi
+		            OUTPUT=`php $PHPINFOPATH | grep ffmpeg-php | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
+		            ;;
+	            *ffmpeg*) 
+		            OUTPUT=`$EXEC -version`
+		            ;;
+	            *) 
+		            OUTPUT=`$EXEC --version`
+		            ;;
+	        esac 
 
-	  if [[ -n $OUTPUT ]]; then
-	      case $EXEC in
-		  *bundler* | *rake* | *flvtool2* | *rmagick*)
-		      VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+'`
-		      ;;
-		  *solus* | *onapp* | "ffmpeg")
-		      VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+-[0-9]\+'`
-		      ;;
-		  *mysql*)
-		      VERSION=`echo $OUTPUT | grep -o 'Distrib \([0-9]\+\.\)\+[0-9]\+' | cut -d' ' -f2`
-		      ;;
-		  *)
-		      VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
-		      ;;
-	      esac
-	      VERSIONLIST=`echo $VERSIONLIST $VERSION`
-	  fi
-      fi
+	        if [[ -n $OUTPUT ]]; then
+	            case $EXEC in
+		            *bundler* | *rake* | *flvtool2* | *rmagick*)
+		                VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+'`
+		                ;;
+		            *solus* | *onapp* | "ffmpeg")
+		                VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+-[0-9]\+'`
+		                ;;
+		            *mysql*)
+		                VERSION=`echo $OUTPUT | grep -o 'Distrib \([0-9]\+\.\)\+[0-9]\+' | cut -d' ' -f2`
+		                ;;
+		            *)
+		                VERSION=`echo $OUTPUT | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
+		                ;;
+	            esac
+	            VERSIONLIST=`echo $VERSIONLIST $VERSION`
+	        fi
+        fi
     done
 }
 
 VERSIONSFILE="version_list.txt"
 if [ -f $VERSIONSFILE ]; then
     for SW in `cat $VERSIONSFILE | cut -d' ' -f1 | uniq `;
-      do
-      SW=`echo $SW | tr -d ' \n\r'`
-      getversion $SW
+    do
+        SW=`echo $SW | tr -d ' \n\r'`
+        getversion $SW
 
-      if [[ -z $VERSIONLIST ]]; then
-	  VERSIONLIST="NA"
-      else 
+        if [[ -z $VERSIONLIST ]]; then
+	        VERSIONLIST="NA"
+        else 
             #remove doubles in the version list
-	  VERSIONLIST=`echo $VERSIONLIST | awk '!arr[$1]++' RS=" "`
-      fi
+	        VERSIONLIST=`echo $VERSIONLIST | awk '!arr[$1]++' RS=" "`
+        fi
 
-      for VERSION in $VERSIONLIST
+        for VERSION in $VERSIONLIST
         do
-	echo $SW, $VERSION >> $LOG_TO
-      done
+	        echo $SW, $VERSION >> $LOG_TO
+        done
     done
 else
     echo "ERROR: Could not find $VERSIONS file. Please make sure it is located at `pwd`."
