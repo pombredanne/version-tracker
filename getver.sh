@@ -111,6 +111,9 @@ getversion()
                     OUTPUT=`$EXEC --version 2>&1`
                     ;;
                 *cpanel*)
+                    if [ $EXEC = "cpanel" ]; then
+                        EXEC=/usr/local/cpanel/cpanel
+                    fi
                     OUTPUT=`$EXEC -V`
                     ;;
                 *softaculous*)
@@ -118,6 +121,9 @@ getversion()
                     ;;
                 *solus*)
                     OUTPUT=`rpm -qa | grep xen-[0-9].*\.soluslabs`
+                    if [ -z $OUTPUT ]; then
+                        OUTPUT=`rpm -qa | grep ^xen-[0-9]\+`
+                    fi
                     ;;
                 *onapp*)
                     OUTPUT=`rpm -qa | grep onapp-hv-install`
