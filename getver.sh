@@ -122,10 +122,7 @@ getversion()
 		            OUTPUT=`php /usr/local/cpanel/whostmgr/docroot/cgi/softaculous/cli.php -v` 
 		            ;;
 	            *solus*)
-		            OUTPUT=`rpm -qa | grep xen-[0-9].*\.soluslabs`
-		            if [ -z $OUTPUT ]; then
-		                OUTPUT=`rpm -qa | grep '^xen-[0-9]\+'`
-		            fi
+	            	    OUTPUT=`rpm -qa | grep '^xen-[0-9]\+'`
 		            ;;
 	            *onapp*)
 		            OUTPUT=`rpm -qa | grep onapp-hv-install`
