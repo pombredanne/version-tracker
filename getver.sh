@@ -124,7 +124,7 @@ getversion()
 	            *solus*)
 		            OUTPUT=`rpm -qa | grep xen-[0-9].*\.soluslabs`
 		            if [ -z $OUTPUT ]; then
-		                OUTPUT=`rpm -qa | grep ^xen-[0-9]\+`
+		                OUTPUT=`rpm -qa | grep '^xen-[0-9]\+'`
 		            fi
 		            ;;
 	            *onapp*)
