@@ -16,17 +16,17 @@
 #
 # RESULT
 # ------
-#     getver.log - csv file located in /var/log if run as root or ~/ if run as other users
+#          getver.log - csv file located in /var/log if run as root or ~/ if run as other users
 #
 # NOTES
 # -----
-#   version_list.txt must be present in the same folder as the script.
-#   It is assumed that the script is run as root by default.
-#   Log file is overwritten.
+#          version_list.txt must be present in the same folder as the script.
+#          It is assumed that the script is run as root by default.
+#          Log file is overwritten.
 #
 # AUTHOR
 # ------
-#   Bogdan Dumitrica (September 2013)
+#          Bogdan Dumitrica (September 2013)
 #
 
 
