@@ -143,6 +143,16 @@ getversion()
 		            ;;
 	            *) 
 		            OUTPUT=`$EXEC --version`
+                    #-v", "--v", "--version" and "version" 
+                    if [[ -z "$OUTPUT" ]]; then
+                        OUTPUT=`$EXEC -v`
+                    fi
+                    if [[ -z "$OUTPUT" ]]; then
+                        OUTPUT=`$EXEC --v`
+                    fi
+                    if [[ -z "$OUTPUT" ]]; then
+                        OUTPUT=`$EXEC version`
+                    fi                    
 		            ;;
 	        esac 
 
