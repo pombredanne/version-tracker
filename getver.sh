@@ -40,6 +40,74 @@ else
 fi
 rm -f $LOG_TO
 
+get_ssh()
+{
+	OUTPUT=`$EXEC -V 2>&1`
+}
+
+get_gems()
+{
+    OUTPUT=`gem list | grep ^${EXEC}\ `
+}
+
+get_python()
+{
+    OUTPUT=`$EXEC --version 2>&1`
+}
+
+get_cpanel()
+{
+    OUTPUT=`$EXEC -V`
+}
+
+get_softaculous()
+{
+	OUTPUT=`php /usr/local/cpanel/whostmgr/docroot/cgi/softaculous/cli.php -v` 
+}
+
+get_solus()
+{
+	OUTPUT=`rpm -qa | grep '^xen-[0-9]\+'`
+} 
+
+get_onapp()
+{
+    OUTPUT=`rpm -qa | grep onapp-hv-install`
+}
+
+get_rsvsitebuilder()
+{
+	OUTPUT=`cat /var/cpanel/rvglobalsoft/rvsitebuilder/rvsitebuilderversion.txt`
+}
+
+get_ffmpeg-php()
+{
+	if [[ $ME = "root" ]]; then
+		PHPINFOPATH=/etc/httpd/htdocs/phpinfo.php
+	else
+		PHPINFOPATH=~/public_html/phpinfo.php
+	fi
+	OUTPUT=`php $PHPINFOPATH | grep ffmpeg-php | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
+}
+
+get_generic() 
+{
+	OUTPUT=`$EXEC --version`
+    #-v", "--v", "--version" and "version" 
+    if [[ -z "$OUTPUT" ]]; then
+        OUTPUT=`$EXEC -v`
+    fi
+    if [[ -z "$OUTPUT" ]]; then
+        OUTPUT=`$EXEC --v`
+    fi
+    if [[ -z "$OUTPUT" ]]; then
+        OUTPUT=`$EXEC version`
+    fi 
+    if [[ -z "$OUTPUT" ]]; then
+        OUTPUT=`$EXEC -version`
+    fi                    
+}
+
 getversion() 
 {
     echo Checking $1...
@@ -104,55 +172,34 @@ getversion()
         if [[ ! -d "$EXEC" ]]; then
 	        case $EXEC in
 	            *ssh*)
-		            OUTPUT=`$EXEC -V 2>&1`
+                    get_ssh
 		            ;;        
-	            *apache* | *httpd*)
-		            OUTPUT=`$EXEC -v`
-		            ;;
 	            bundler | rmagick)
-		            OUTPUT=`gem list | grep ^${EXEC}\ `
+                    get_gems
 		            ;;
 	            *python*)
-		            OUTPUT=`$EXEC --version 2>&1`
+		            get_python
 		            ;;
 	            *cpanel*)
-		            OUTPUT=`$EXEC -V`
+		            get_cpanel
 		            ;;
 	            *softaculous*)
-		            OUTPUT=`php /usr/local/cpanel/whostmgr/docroot/cgi/softaculous/cli.php -v` 
+                    get_softaculous
 		            ;;
 	            *solus*)
-	            	    OUTPUT=`rpm -qa | grep '^xen-[0-9]\+'`
+	                get_solus
 		            ;;
 	            *onapp*)
-		            OUTPUT=`rpm -qa | grep onapp-hv-install`
+                    get_onapp
 		            ;;
 	            *rvsitebuilder*)
-		            OUTPUT=`cat /var/cpanel/rvglobalsoft/rvsitebuilder/rvsitebuilderversion.txt`
+                    get_rsvsitebuilder
 		            ;;
 	            *ffmpeg-php*)
-		            if [[ $ME = "root" ]]; then
-		                PHPINFOPATH=/etc/httpd/htdocs/phpinfo.php
-		            else
-		                PHPINFOPATH=~/public_html/phpinfo.php
-		            fi
-		            OUTPUT=`php $PHPINFOPATH | grep ffmpeg-php | grep -o '\([0-9]\+\.\)\+[0-9]\+' | head -1`
+                    get_ffmpeg-php
 		            ;;
-	            *ffmpeg*) 
-		            OUTPUT=`$EXEC -version`
-		            ;;
-	            *) 
-		            OUTPUT=`$EXEC --version`
-                    #-v", "--v", "--version" and "version" 
-                    if [[ -z "$OUTPUT" ]]; then
-                        OUTPUT=`$EXEC -v`
-                    fi
-                    if [[ -z "$OUTPUT" ]]; then
-                        OUTPUT=`$EXEC --v`
-                    fi
-                    if [[ -z "$OUTPUT" ]]; then
-                        OUTPUT=`$EXEC version`
-                    fi                    
+	            *)
+                    get_generic
 		            ;;
 	        esac 
 
