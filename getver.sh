@@ -247,6 +247,6 @@ else
     echo "ERROR: Could not find $VERSIONS file. Please make sure it is located at `pwd`."
 fi
 
-echo "I am \"$ME\" and logging to $LOG_TO"
+echo "I am \"$ME\" and logging to ${LOG_TO} ."
 
 
