@@ -42,22 +42,22 @@ rm -f $LOG_TO
 
 get_ssh()
 {
-	OUTPUT=`$EXEC -V 2>&1`
+    OUTPUT=`$EXEC -V 2>&1`
 }
 
 get_gems()
 {
-    OUTPUT=`gem list | grep ^${EXEC}\ `
+	OUTPUT=`gem list | grep ^${EXEC}\ `
 }
 
 get_python()
 {
-    OUTPUT=`$EXEC --version 2>&1`
+	OUTPUT=`$EXEC --version 2>&1`
 }
 
 get_cpanel()
 {
-    OUTPUT=`$EXEC -V`
+	OUTPUT=`$EXEC -V`
 }
 
 get_softaculous()
@@ -108,11 +108,8 @@ get_generic()
     fi                    
 }
 
-getversion() 
+get_appname() 
 {
-    echo Checking $1...
-    VERSIONLIST=""
-
     case  $1 in
     	*Apache*)
             APPNAME="httpd"
@@ -142,7 +139,10 @@ getversion()
 	        APPNAME=`echo $1 | tr '[:upper:]' '[:lower:]'`
 	        ;;
     esac
-    
+}
+
+get_execs() 
+{
     DEPTH=1
     case $APPNAME in
         php)
@@ -158,7 +158,7 @@ getversion()
     esac
     EXECS=`find $PATH_LIST -maxdepth $DEPTH -regextype posix-extended -iregex ".*/${APPNAME}(|[0-9]+|[0-9]+.[0-9]+)"`
 
-    #for users with no find rights in /usr/local/cpanel
+    #for users withouth find rights in /usr/local/cpanel
     if [[ $EXECS = "/usr/local/cpanel" ]]; then
 	    EXECS=/usr/local/cpanel/cpanel
     fi
@@ -166,7 +166,16 @@ getversion()
     if [[ -z "$EXECS" ]]; then
         EXECS=$APPNAME
     fi
-    
+}
+
+getversion() 
+{
+    echo Checking $1...
+    VERSIONLIST=""
+
+    get_appname $1
+    get_execs
+
     for EXEC in $EXECS
     do
         if [[ ! -d "$EXEC" ]]; then
